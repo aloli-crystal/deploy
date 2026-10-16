@@ -346,7 +346,6 @@ module Deploy
         when "", "o", "oui", "y", "yes"      then :send
         when "n", "non", "no"                then :cancel
         when "r", "retry", "reprendre", "re" then :retry
-        else                                      nil
         end
       end
 

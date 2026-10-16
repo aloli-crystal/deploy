@@ -12,9 +12,10 @@ module Deploy
       def generate : String
         # Détecter les noms d'environnement depuis config/deploy.yml
         # staging (ou preprod/dev) pour la préprod, production pour la prod
-        preprod_env = @config.environments.keys.find { |k|
+        preprod_env = @config.environments.keys.find do |k|
           k.starts_with?("stag") || k.starts_with?("preprod") || k.starts_with?("pre") || k.starts_with?("dev")
-        } || @config.environments.keys.reject { |k| k.starts_with?("prod") }.first? || "staging"
+        end
+        preprod_env ||= @config.environments.keys.reject { |k| k.starts_with?("prod") }.first? || "staging"
         prod_env = @config.environments.keys.find { |k| k.starts_with?("prod") } || "production"
 
         preprod_host = @config.environments[preprod_env]?.try(&.host) || "deploy.example.com"

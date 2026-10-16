@@ -71,7 +71,7 @@ module Deploy
     # Factory : instancie le bon registrar selon la configuration
     module Factory
       def self.for(registrar : String?, config : Config, env : Environment) : Base?
-        return nil if registrar.nil? || registrar.empty?
+        return if registrar.nil? || registrar.empty?
 
         case registrar.downcase
         when "ovh"

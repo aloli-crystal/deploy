@@ -89,7 +89,7 @@ module Deploy
           puts USAGE
           exit 0
         end
-        valid_subs = %w(init deploy rollback status generate-ci dns-setup)
+        valid_subs = %w[init deploy rollback status generate-ci dns-setup]
         unless valid_subs.includes?(sub.downcase)
           STDERR.puts "Aide indisponible pour « #{sub} » (sous-commandes : #{valid_subs.join(", ")})."
           STDERR.puts "Utilisez `deploy help` pour l'aide globale."

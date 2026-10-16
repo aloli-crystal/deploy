@@ -360,15 +360,14 @@ end
 describe Deploy::DNS::Ovh, "vérification CNAME" do
   it "cname_exists détecte un tableau JSON non vide d'IDs numériques" do
     # Simuler les réponses possibles de l'API OVH
+    cname = /^\[\s*\d/
     # Tableau non vide → CNAME existe
-    !!(("[12345678]" =~ /^\[\s*\d/)).should be_truthy
-    !!(("[ 12345678, 87654321 ]" =~ /^\[\s*\d/)).should be_truthy
-    # Tableau vide → pas de CNAME
-    !!(("[]" =~ /^\[\s*\d/)).should be_falsey
-    # Erreur d'authentification OVH (pas de mot "error") → pas de CNAME
-    !!(("{\"message\":\"Invalid credentials\"}" =~ /^\[\s*\d/)).should be_falsey
-    # Réponse vide (timeout curl) → pas de CNAME
-    !!(("" =~ /^\[\s*\d/)).should be_falsey
+    ["[12345678]", "[ 12345678, 87654321 ]"].each { |reponse| (reponse =~ cname).should be_truthy }
+    [
+      "[]",                                    # Tableau vide → pas de CNAME
+      "{\"message\":\"Invalid credentials\"}", # Erreur d'authentification OVH (pas de mot "error")
+      "",                                      # Réponse vide (timeout curl)
+    ].each { |reponse| (reponse =~ cname).should be_falsey }
   end
 end
 
